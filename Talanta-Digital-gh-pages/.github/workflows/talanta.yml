@@ -1,0 +1,30 @@
+name: Talanta Deployment
+on:
+  push:
+    branches:
+      - gh-pages
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Executing Deployments
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{secrets.SSH_KEY}}
+          port: ${{ secrets.HOST_PORT }}
+          script: |
+            whoami
+            cd talanta
+            php artisan down
+            php artisan cache:clear
+            php artisan view:clear
+            php artisan config:clear
+            git pull
+            # cp .env.example .env
+            php artisan key:generate
+            # service php8.0-fpm reload
+            php artisan up
+            # php artisan migrate:fresh --seed
