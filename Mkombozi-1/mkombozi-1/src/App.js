@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="flex bg-[#F9FAFB] h-screen">
       <SideBar />
-      <div className="w-5/6">
+      <div className="w-full">
         <Wrapper />
       </div>
     </div>
